@@ -1,7 +1,7 @@
-functions-framework==3.*
-google-cloud-firestore==2.*
-google-cloud-aiplatform==1.*
-vertexai==1.*
-twilio==8.*
-geopy==2.*
-python-dotenv==1.*
+functions-framework==3.8.2
+google-cloud-firestore==2.19.0
+google-cloud-aiplatform==1.74.0
+vertexai==1.74.0
+twilio==9.4.3
+geopy==2.4.1
+python-dotenv==1.0.1

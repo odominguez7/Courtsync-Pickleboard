@@ -38,7 +38,7 @@ def whatsapp_webhook(request: Request):
         logger.warning("Missing From or Body in Twilio request")
         return "Bad Request", 400
 
-    logger.info(f"Message from {from_number}: {message_body[:50]}...")
+    logger.info("Message from %s: %s...", from_number[:4] + "****" if len(from_number) > 4 else "****", message_body[:50])
 
     try:
         response_text = coordinator.process_message(

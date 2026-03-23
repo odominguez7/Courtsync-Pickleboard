@@ -1,2 +1,2 @@
-functions-framework==3.*
-twilio==8.*
+functions-framework==3.8.2
+twilio==9.4.3

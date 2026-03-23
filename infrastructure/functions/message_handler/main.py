@@ -40,7 +40,8 @@ def handle_message(cloud_event):
     message_body = message_data["body"]
     profile_name = message_data.get("profile_name", "Player")
 
-    logger.info(f"Processing message from {user_phone}: {message_body[:50]}")
+    redacted = user_phone[:4] + "****" if len(user_phone) > 4 else "****"
+    logger.info("Processing message from %s: %s", redacted, message_body[:50])
 
     result = coordinator.process_message(
         player_phone=user_phone,

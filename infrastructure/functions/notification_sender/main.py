@@ -38,18 +38,21 @@ def send_notification(cloud_event):
     message_body = notification.get("message") or notification.get("text")
 
     if not to_phone or not message_body:
-        logger.error(f"Invalid notification payload: {notification}")
+        logger.error("Invalid notification payload: missing to or message")
         return {"status": "invalid_payload"}
+
+    # Validate phone format
+    redacted = to_phone[:4] + "****" if len(to_phone) > 4 else "****"
 
     try:
         msg = twilio_client.messages.create(
             from_=f"whatsapp:{os.getenv('TWILIO_WHATSAPP_NUMBER')}",
             to=f"whatsapp:{to_phone}",
-            body=message_body,
+            body=message_body[:1600],  # WhatsApp message limit
         )
-        logger.info(f"Sent to {to_phone}: SID={msg.sid}")
-        return {"status": "sent", "to": to_phone, "sid": msg.sid}
+        logger.info("Sent to %s: SID=%s", redacted, msg.sid)
+        return {"status": "sent", "sid": msg.sid}
 
     except Exception as e:
-        logger.error(f"Twilio error sending to {to_phone}: {e}")
+        logger.error("Twilio error sending to %s: %s", redacted, e)
         raise  # Cloud Functions will auto-retry on unhandled exception
